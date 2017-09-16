@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1V4-UW-X0B">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Открытие-->
+        <scene sceneID="t4r-Ed-gKJ">
+            <objects>
+                <viewController id="cGU-og-qWN" customClass="OBHomeViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="W9p-uD-uaX"/>
+                        <viewControllerLayoutGuide type="bottom" id="8Z0-73-rj4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fiq-Yq-CrJ">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mXs-BS-cNm">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="mXs-BS-cNm" secondAttribute="trailing" id="Ntq-pb-wtY"/>
+                            <constraint firstItem="mXs-BS-cNm" firstAttribute="leading" secondItem="fiq-Yq-CrJ" secondAttribute="leading" id="e7C-Do-Pgm"/>
+                            <constraint firstItem="8Z0-73-rj4" firstAttribute="top" secondItem="mXs-BS-cNm" secondAttribute="bottom" id="uNg-Uf-7zZ"/>
+                            <constraint firstItem="mXs-BS-cNm" firstAttribute="top" secondItem="W9p-uD-uaX" secondAttribute="bottom" id="wKs-Yu-zQV"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Открытие" id="fSU-6h-fKe"/>
+                    <connections>
+                        <outlet property="tableView" destination="mXs-BS-cNm" id="HEW-RL-3x8"/>
+                        <segue destination="CnV-GC-eNx" kind="show" identifier="toTransfer" id="LVk-P9-nZh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DpA-KF-kYs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1193" y="-1163"/>
+        </scene>
+        <!--Платежи и переводы-->
+        <scene sceneID="TRL-cK-unQ">
+            <objects>
+                <viewController id="CnV-GC-eNx" customClass="OBTransferViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OLI-AQ-DQo"/>
+                        <viewControllerLayoutGuide type="bottom" id="qtp-YQ-FkV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lw4-8u-9d1">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gGS-W7-Oen">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qtp-YQ-FkV" firstAttribute="top" secondItem="gGS-W7-Oen" secondAttribute="bottom" id="4PW-nP-d9m"/>
+                            <constraint firstItem="gGS-W7-Oen" firstAttribute="top" secondItem="OLI-AQ-DQo" secondAttribute="bottom" id="JJ2-PY-UOo"/>
+                            <constraint firstAttribute="trailing" secondItem="gGS-W7-Oen" secondAttribute="trailing" id="Q37-N2-b8v"/>
+                            <constraint firstItem="gGS-W7-Oen" firstAttribute="leading" secondItem="lw4-8u-9d1" secondAttribute="leading" id="kau-jB-yXq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Платежи и переводы" id="EAb-bB-24O">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="4BO-va-Xtb" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
+                            <connections>
+                                <action selector="goBack:" destination="CnV-GC-eNx" id="UdL-Ol-stH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backButton" destination="4BO-va-Xtb" id="l7f-Hg-AvV"/>
+                        <outlet property="navigationItem" destination="EAb-bB-24O" id="Deu-cw-flU"/>
+                        <outlet property="tableView" destination="gGS-W7-Oen" id="Vuo-he-36l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vjq-38-Fd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2150" y="-1164"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eay-xJ-9jU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1V4-UW-X0B" customClass="OBNavigationController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="a4G-Lc-Z5Y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="cGU-og-qWN" kind="relationship" relationship="rootViewController" id="MtI-qe-Uwf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="umH-gL-78i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="217" y="-1164"/>
+        </scene>
+    </scenes>
+</document>
