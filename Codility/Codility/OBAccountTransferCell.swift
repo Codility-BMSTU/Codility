@@ -10,6 +10,12 @@ import UIKit
 
 class OBAccountTransferCell: UITableViewCell {
 
+    @IBOutlet weak var INNTextFieled: UITextField!
+    @IBOutlet weak var accountTextFieled: UITextField!
+    @IBOutlet weak var BIKtextFieled: UITextField!
+    @IBOutlet weak var corpAccountTextFieled: UITextField!
+    @IBOutlet weak var bankNameTextFieled: UITextField!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

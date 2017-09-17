@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Tac-OL-7th">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--TouchID View Controller-->
+        <scene sceneID="9fH-i2-Jcy">
+            <objects>
+                <viewController id="Tac-OL-7th" customClass="OBTouchIDViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2l0-NJ-RbZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="CKE-nr-YHi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r9z-sU-pcW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="hmr-CS-JIi">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xJC-71-FYd">
+                                <rect key="frame" x="152" y="486" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="A3w-vN-P7V"/>
+                                    <constraint firstAttribute="height" constant="70" id="d1d-ic-QE9"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="ic_fingerprint"/>
+                                <connections>
+                                    <action selector="loginButtonClicked:" destination="Tac-OL-7th" eventType="touchUpInside" id="xuJ-xH-d21"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xJC-71-FYd" firstAttribute="centerX" secondItem="r9z-sU-pcW" secondAttribute="centerX" id="GZD-yo-FB9"/>
+                            <constraint firstItem="CKE-nr-YHi" firstAttribute="top" secondItem="hmr-CS-JIi" secondAttribute="bottom" id="as4-xk-08y"/>
+                            <constraint firstItem="hmr-CS-JIi" firstAttribute="top" secondItem="r9z-sU-pcW" secondAttribute="top" id="bGN-67-NOS"/>
+                            <constraint firstItem="hmr-CS-JIi" firstAttribute="leading" secondItem="r9z-sU-pcW" secondAttribute="leading" id="dPI-92-oZS"/>
+                            <constraint firstItem="CKE-nr-YHi" firstAttribute="top" secondItem="xJC-71-FYd" secondAttribute="bottom" constant="111" id="dY6-dH-ey7"/>
+                            <constraint firstAttribute="trailing" secondItem="hmr-CS-JIi" secondAttribute="trailing" id="qPg-SM-B4H"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Elb-5c-T2M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1836" y="4364.167916041979"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ic_fingerprint" width="35" height="35"/>
+        <image name="launch" width="375" height="667"/>
+    </resources>
+</document>

@@ -94,6 +94,10 @@ class OBAPIManager {
     private class func myCardsOnSuccess(json: JSON) -> Void {
         print(json)
         let response = OBMyCardsResponse(json: json)
+        OBDatabaseManager.saveCards(response: response)
+//        for card in response.cards {
+//            let myInforequest = OBMyCardInfoRequest()
+//        }
         NotificationCenter.default.post(name: .myCardsCallback, object: nil, userInfo: ["data": response])
     }
     
@@ -135,9 +139,12 @@ class OBAPIManager {
     //history
     class func myCardHistoryRequest(request: OBMyCardHistoryRequest) -> Void {
         
-        let parameters: Parameters = [
-            "CardId": request.id
+        let parameters = [
+            "CardId": "44"
         ]
+        
+//        var headers = Alamofire.SessionManager.defaultHTTPHeaders
+//        headers["User-Agent"] = "iPhone"
         
         self.request(URL: OBURLRouter.getMyCardHistoryURL, method: .post, parameters: parameters, onSuccess: myCardHistoryOnSuccess, onError: defaultOnError)
         
@@ -149,6 +156,57 @@ class OBAPIManager {
         NotificationCenter.default.post(name: .myCardHistoryCallback, object: nil, userInfo: ["data": response])
     }
     
+    //invoicing
+    
+    class func createInvoiceRequest(request: OBCreateInvoiceRequest) -> Void {
+        
+        let parameters: Parameters = [
+            
+//            "RqUID": "123e4567-e89b-12d3-a456-426655440000",
+//            
+//            "InvoiceCreateNumber": 123456789,
+//            "InvoiceCreateDate": "01.01.2017",
+//            "InvoiceCreateSum": request.invoiceCreateSum,
+//            
+//            "InvoiceCreatePayerINN": request.invoiceCreatePayerINN,
+//            "InvoiceCreatePayerAcc": request.invoiceCreatePayerAcc,
+//            "InvoiceCreatePayerBIK": request.invoiceCreatePayerBIK,
+//            "InvoiceCreatePayerCorrAcc": request.invoiceCreatePayerCorrAcc,
+//            "InvoiceCreatePayerBankname": request.invoiceCreatePayerBankname,
+//            
+//            "InvoiceCreatePayeeINN": request.invoiceCreatePayeeINN,
+//            "InvoiceCreatePayeeAcc": request.invoiceCreatePayeeAcc,
+//            "InvoiceCreatePayeeBIK": request.invoiceCreatePayeeBIK,
+//            "InvoiceCreatePayeeCorrAcc": request.invoiceCreatePayeeCorrAcc,
+//            "InvoiceCreatePayeeBankname": request.invoiceCreatePayeeBankname
+            
+                "RqUID": "123e4567-e89b-12d3-a456-426655440000",
+                "InvoiceCreateNumber": "123456789",
+                "InvoiceCreateDate": "01.01.2017",
+                "InvoiceCreateSum": "1000.00",
+                "InvoiceCreatePayerINN": "500100732259",
+                "InvoiceCreatePayerAcc": "40702810438290000000",
+                "InvoiceCreatePayerBIK": "044525985",
+                "InvoiceCreatePayerCorrAcc": "30101810300000000985",
+                "InvoiceCreatePayerBankname": "ПАО Банк «ФК Открытие»",
+                "InvoiceCreatePayeeINN": "500100732260",
+                "InvoiceCreatePayeeAcc": "40702810138170000000",
+                "InvoiceCreatePayeeBIK": "044525985",
+                "InvoiceCreatePayeeCorrAcc": "30101810300000000985",
+                "InvoiceCreatePayeeBankname": "ПАО Банк «ФК Открытие»"
+            
+            
+        ]
+        
+        self.request(URL: OBURLRouter.getCreateInvoiceURL, method: .post, parameters: parameters, onSuccess: createInvoiceOnSuccess, onError: defaultOnError)
+        
+    }
+    
+    private class func createInvoiceOnSuccess(json: JSON) -> Void {
+        print(json)
+        let response = OBCreateInvoiceResponse(json: json)
+        NotificationCenter.default.post(name: .createInvoiceCallback, object: nil, userInfo: ["data": response])
+    }
 
     private class func defaultOnSuccess(json: JSON) -> Void{
         print(json)
@@ -158,8 +216,28 @@ class OBAPIManager {
         print(error)
     }
     
+//    https://wikimedia.org/api/rest_v1/media/math/check
+    
+    class func wiki() -> Void {
+        
+        let parameters: Parameters = [
+            
+            "q": "qwerty"
+            
+        ]
+        
+        self.request(URL: "https://wikimedia.org/api/rest_v1/media/math/check", method: .post, parameters: parameters, onSuccess: defaultOnSuccess, onError: defaultOnError)
+        
+    }
+
+    
     private class func request(URL: String, method: HTTPMethod, parameters: Parameters, onSuccess: @escaping (JSON) -> Void , onError: @escaping (Any) -> Void) -> Void {
-        Alamofire.request(URL, method: method, parameters: parameters ).validate().responseJSON { response in
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        Alamofire.request(URL, method: method, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
