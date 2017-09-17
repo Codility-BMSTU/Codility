@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import AMPopTip
 
 class OBQuestViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
-    @IBOutlet weak var current: UILabel!
     
     @IBOutlet weak var table: UITableView!
     
@@ -73,8 +73,8 @@ class OBQuestViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let view = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 20, height: 20))
             view.heightAnchor.constraint(equalToConstant: 20).isActive = true
             view.widthAnchor.constraint(equalToConstant: 20).isActive = true
-            
-            view.backgroundColor = UIColor.yellow
+            view.image = UIImage(named:"achievedAvard")
+            //view.backgroundColor = UIColor.yellow
             cell.starStack.addArrangedSubview(view)
         }
         
@@ -82,7 +82,8 @@ class OBQuestViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let view = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 20, height: 20))
             view.heightAnchor.constraint(equalToConstant: 20).isActive = true
             view.widthAnchor.constraint(equalToConstant: 20).isActive = true
-            view.backgroundColor = UIColor.gray
+            view.image = UIImage(named:"progressAvard")
+            //view.backgroundColor = UIColor.gray
             cell.starStack.addArrangedSubview(view)
         }
 
@@ -101,6 +102,21 @@ class OBQuestViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20.0
+    }
+    
+    
+    
+    let popTip = PopTip()
+    
+    @IBOutlet weak var helpButton: UIButton!
+    
+    @IBAction func askHelp(_ sender: Any) {
+        popTip.bubbleColor = UIColor.init(red: 1/255, green: 185/255, blue: 255/255, alpha: 1.0)
+        popTip.show(text: "На этом экране показываются Ваши квесты", direction: .left, maxWidth: 200, in: view, from: helpButton.frame)
+    }
+    
+    @IBAction func goBack(_ sender: OBBackBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

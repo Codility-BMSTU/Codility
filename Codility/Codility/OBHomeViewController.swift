@@ -8,20 +8,60 @@
 
 import UIKit
 import RealmSwift
+import Instructions
 
-
-class OBHomeViewController: UIViewController {
-
+class OBHomeViewController: UIViewController, CoachMarksControllerDataSource {
+    
+    let coachMarksController = CoachMarksController()
+    
+    var dataSource = Array<[Any]>()
+    
     @IBOutlet weak var tableView: UITableView!
     
     let headers = ["Мои карты"]
     
     var cards: Results<OBMyCard> = OBDatabaseManager.getCards()
     
+    var isLearn: Bool = false
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if !isLearn {
+            self.coachMarksController.start(on: self)
+            isLearn = true
+        }
+    }
+    
+    
+    
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        return dataSource.count
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController,
+                              coachMarkAt index: Int) -> CoachMark {
+        //return coachMarksController.helper.makeCoachMark(for: l1)
+        return coachMarksController.helper.makeCoachMark(for: dataSource[index][0]as?UIView)
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        
+        let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+        
+        coachViews.bodyView.hintLabel.text = dataSource[index][1]as?String
+        coachViews.bodyView.nextLabel.text = "Далее"
+        
+        return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(myCardsCallback(_:)), name: .myCardsCallback, object: nil)
+        coachMarksController.dataSource = self
+    }
+    
+    func myCardsCallback(_ notification: NSNotification) {
+        tableView.reloadData()
     }
     
     func setupTableView() {
@@ -29,6 +69,7 @@ class OBHomeViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
         self.tableView.register(UINib(nibName: "OBCardCell", bundle: nil), forCellReuseIdentifier: "OBCardCell")
+        self.tableView.register(UINib(nibName: "OBHomeATMQuestsViewCell", bundle: nil), forCellReuseIdentifier: "OBHomeATMQuestsViewCell")
         self.tableView.register(UINib(nibName: "OBSectionHeaderCell", bundle: nil), forCellReuseIdentifier: "OBSectionHeaderCell")
         self.tableView.register(UINib(nibName: "OBHomeTransferCell", bundle: nil), forCellReuseIdentifier: "OBHomeTransferCell")
     }
@@ -57,13 +98,27 @@ class OBHomeViewController: UIViewController {
         OBTransferType.transferType = .emailTransfer
     }
     
+    // MARK: footer cell actions
+    
+    func questsTransferPressed() {
+        self.performSegue(withIdentifier: OBSegueRouter.toQuests, sender: nil)
+    }
+    
+    func ATMOutletTransferPressed() {
+        self.performSegue(withIdentifier: OBSegueRouter.toATMOutlets, sender: nil)
+    }
+    
+    func QRCodeButtonPressed() {
+        self.performSegue(withIdentifier: OBSegueRouter.toQRSCan, sender: nil)
+    }
+    
 }
 
 
 extension OBHomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cards.count + 2
+        return cards.count + 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,9 +134,19 @@ extension OBHomeViewController: UITableViewDataSource {
             cell.phoneTransferButton.addTarget(self, action:#selector(phoneTransferPressed), for: .touchUpInside)
             cell.organisationTransferButton.addTarget(self, action:#selector(organisationTransferPressed), for: .touchUpInside)
             cell.emailTransferButton.addTarget(self, action:#selector(emailTransferPressed), for: .touchUpInside)
+            dataSource.append([cell,"Здесь вы можете выполнять основные действия"])
             return cell
         }
-        else {
+        else if indexPath.row == cards.count + 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "OBHomeATMQuestsViewCell", for: indexPath) as! OBHomeATMQuestsViewCell
+            
+            cell.questsButton.addTarget(self, action:#selector(questsTransferPressed), for: .touchUpInside)
+            cell.ATMOutletButton.addTarget(self, action:#selector(ATMOutletTransferPressed), for: .touchUpInside)
+            cell.QRCodeButton.addTarget(self, action:#selector(QRCodeButtonPressed), for: .touchUpInside)
+            dataSource.append([cell,"Здесь вы можете выполнять дополнительные действия"])
+            return cell
+        }
+        else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "OBCardCell", for: indexPath) as! OBCardCell
             
             let paymentSystem = cards[indexPath.row - 1].paymentSystem
@@ -102,12 +167,11 @@ extension OBHomeViewController: UITableViewDataSource {
             if type == "debit" {
                 cell.cardType.text = "Дебетовая"
             }
-            
+            dataSource.append([cell,"Это ваша карта"])
             return cell
         }
         
     }
-    
 
 }
 
@@ -121,7 +185,7 @@ extension OBHomeViewController: UITableViewDelegate {
         if indexPath.row == 0 {
             return false
         }
-        if indexPath.row == cards.count + 1 {
+        if indexPath.row >= cards.count + 1 {
             return false
         }
         return true
@@ -131,7 +195,7 @@ extension OBHomeViewController: UITableViewDelegate {
         if indexPath.row == 0 {
             return 40
         }
-        if indexPath.row == cards.count + 1 {
+        if indexPath.row >= cards.count + 1 {
             return 137
         }
         return 60

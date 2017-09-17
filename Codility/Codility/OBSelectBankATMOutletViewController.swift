@@ -101,10 +101,12 @@ class OBSelectBankATMOutletViewController: UIViewController,UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if(indexPath.section==1){
             self.performSegue(withIdentifier: "toChooseService", sender: OutletDataSource[indexPath.row])
         }
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toChooseService"{
@@ -112,4 +114,9 @@ class OBSelectBankATMOutletViewController: UIViewController,UITableViewDataSourc
             destViewController.fullDataSource = (sender as! BankOutlet).services!
         }
     }
+    
+    @IBAction func goBack(_ sender: OBBackBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }

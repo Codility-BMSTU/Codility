@@ -20,8 +20,13 @@ class OBTransferViewController: UIViewController, EPPickerDelegate {
     
     var contact = ""
     var encodedData: String?
+    var JKHMArker : Bool = false
     var accountCell: OBAccountTransferCell?
     var confirmCell: OBTransferConfirmCell?
+    var simpleCellFrom: OBSimpleTransferCell?
+    var simpleCellTo: OBSimpleTransferCell?
+    
+    var isForSecond: Bool = false
     
     var accountDictionary: Dictionary<String, String> = [
        "INNTextFieled" : "",
@@ -40,7 +45,21 @@ class OBTransferViewController: UIViewController, EPPickerDelegate {
         if((encodedData) != nil){
             decodeData()
         }
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
     }
+    
+    
+//    func keyboardWillShow(sender: NSNotification) {
+//        self.view.frame.origin.y = -80 // Move view 150 points upward
+//    }
+//    
+//    func keyboardWillHide(sender: NSNotification) {
+//        self.view.frame.origin.y = 0 // Move view to original position
+//    }
     
     func decodeData() {
         let data = Data(base64Encoded: self.encodedData!)
@@ -140,8 +159,23 @@ class OBTransferViewController: UIViewController, EPPickerDelegate {
         tableView.reloadData()
     }
     
+//    //сallback добавить
+//    func createQRCode() {
+//        
+//    }
+    
+    
     func createQRCode() {
-        
+        if let data = encode() {
+            self.performSegue(withIdentifier: OBSegueRouter.toCreateQR, sender: data)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == OBSegueRouter.toCreateQR {
+            let viewcontroller = segue.destination as! OBCreateQRViewController
+            viewcontroller.encodedData = sender as! String
+        }
     }
     
     func createLink() {
@@ -155,24 +189,35 @@ class OBTransferViewController: UIViewController, EPPickerDelegate {
         }
     }
     
+    func openCardPicker() {
+        isForSecond = false
+        self.performSegue(withIdentifier: OBSegueRouter.toCardPicker, sender: nil)
+    }
+    
+    func openSecondCardPicker() {
+        isForSecond = true
+        self.performSegue(withIdentifier: OBSegueRouter.toCardPicker, sender: nil)
+    }
+    
 }
 
 
 extension OBTransferViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch OBTransferType.transferType {
-        case .selfTransfer:
-            return 3
-        case .phoneTransfer:
-            return 3
-        case .organisationTransfer:
-            return 2
-        case .emailTransfer:
-            return 3
-        case .linkTransfer:
-            return 3
-        }
+//        switch OBTransferType.transferType {
+//        case .selfTransfer:
+//            return 3
+//        case .phoneTransfer:
+//            return 3
+//        case .organisationTransfer:
+//            return 2
+//        case .emailTransfer:
+//            return 3
+//        case .linkTransfer:
+//            return 3
+//        }
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -182,6 +227,8 @@ extension OBTransferViewController: UITableViewDataSource {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBSimpleTransferCell", for: indexPath) as! OBSimpleTransferCell
                 cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
+                cell.button.addTarget(self, action: #selector(openCardPicker), for: .touchUpInside)
+                self.simpleCellFrom = cell
                 cell.textField.placeholder = "Введите номер карты"
                 return cell
             }
@@ -190,6 +237,9 @@ extension OBTransferViewController: UITableViewDataSource {
                 cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
                 cell.titleLabel.text = "Куда перевести"
                 cell.textField.placeholder = "Введите номер карты"
+                cell.button.addTarget(self, action: #selector(openSecondCardPicker), for: .touchUpInside)
+                self.simpleCellTo = cell
+                
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBTransferConfirmCell", for: indexPath) as! OBTransferConfirmCell
@@ -200,6 +250,9 @@ extension OBTransferViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBSimpleTransferCell", for: indexPath) as! OBSimpleTransferCell
                 cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
                 cell.textField.placeholder = "Введите номер карты"
+                cell.button.addTarget(self, action: #selector(openCardPicker), for: .touchUpInside)
+                self.simpleCellFrom = cell
+                
                 return cell
             }
             else if indexPath.row == 1 {
@@ -215,8 +268,26 @@ extension OBTransferViewController: UITableViewDataSource {
             }
         case .organisationTransfer:
             if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "OBSimpleTransferCell", for: indexPath) as! OBSimpleTransferCell
+                cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
+                cell.textField.placeholder = "Введите номер карты"
+                cell.button.addTarget(self, action: #selector(openCardPicker), for: .touchUpInside)
+                self.simpleCellFrom = cell
+                
+                return cell
+            }
+            else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBAccountTransferCell", for: indexPath) as! OBAccountTransferCell
                 self.accountCell = cell
+                
+//                NotificationCenter.default.addObserver(cell.corpAccountTextFieled, selector: #selector(keyboardWillShow(sender:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//                NotificationCenter.default.addObserver(cell.corpAccountTextFieled, selector: #selector(keyboardWillHide(sender:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+//                
+//                NotificationCenter.default.addObserver(cell.bankNameTextFieled, selector: #selector(keyboardWillShow(sender:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//                NotificationCenter.default.addObserver(cell.bankNameTextFieled, selector: #selector(keyboardWillHide(sender:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+                
+                
+                
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBTransferConfirmCell", for: indexPath) as! OBTransferConfirmCell
@@ -225,6 +296,10 @@ extension OBTransferViewController: UITableViewDataSource {
                 cell.createQRCodeButton.isHidden = false
                 cell.createLinkButton.addTarget(self, action: #selector(createLink), for: .touchUpInside)
                 cell.createQRCodeButton.addTarget(self, action: #selector(createQRCode), for: .touchUpInside)
+                
+//                NotificationCenter.default.addObserver(cell.sumTextField, selector: #selector(keyboardWillShow(sender:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//                NotificationCenter.default.addObserver(cell.sumTextField, selector: #selector(keyboardWillHide(sender:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+                
                 return cell
             }
         case .emailTransfer:
@@ -232,6 +307,9 @@ extension OBTransferViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBSimpleTransferCell", for: indexPath) as! OBSimpleTransferCell
                 cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
                 cell.textField.placeholder = "Введите номер карты"
+                cell.button.addTarget(self, action: #selector(openCardPicker), for: .touchUpInside)
+                self.simpleCellFrom = cell
+                
                 return cell
             }
             else if indexPath.row == 1 {
@@ -251,6 +329,9 @@ extension OBTransferViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OBSimpleTransferCell", for: indexPath) as! OBSimpleTransferCell
                 cell.button.setImage(UIImage.OBImage.peopleHome, for: .normal)
                 cell.textField.placeholder = "Введите номер карты"
+                cell.button.addTarget(self, action: #selector(openCardPicker), for: .touchUpInside)
+                self.simpleCellFrom = cell
+                
                 return cell
             }
             else if indexPath.row == 1 {
@@ -324,6 +405,9 @@ extension OBTransferViewController: UITableViewDelegate {
             }
         case .organisationTransfer:
             if indexPath.row == 0 {
+                return 77
+            }
+            else if indexPath.row == 1 {
                 return 246
             } else {
                 return 148

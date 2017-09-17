@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -38,11 +39,74 @@
                     <connections>
                         <outlet property="tableView" destination="mXs-BS-cNm" id="HEW-RL-3x8"/>
                         <segue destination="CnV-GC-eNx" kind="show" identifier="toTransfer" id="LVk-P9-nZh"/>
+                        <segue destination="c3J-de-Cr4" kind="show" identifier="toATMOutlets" id="r8n-vx-Zf3"/>
+                        <segue destination="Hkn-dx-X4G" kind="show" identifier="toQuests" id="Fru-Lm-ybF"/>
+                        <segue destination="Nxc-9L-veq" kind="show" identifier="toQRSCan" id="ZZl-94-hhT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DpA-KF-kYs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1193" y="-1163"/>
+        </scene>
+        <!--ATMandOutlet-->
+        <scene sceneID="Z5c-LU-nO3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ATMandOutlet" id="c3J-de-Cr4" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3JI-k1-bYi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="801" y="-735"/>
+        </scene>
+        <!--Quests-->
+        <scene sceneID="HA7-y2-mdQ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Quests" id="Hkn-dx-X4G" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Qr-kJ-Y18" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1502" y="-741"/>
+        </scene>
+        <!--Сканер QR кода-->
+        <scene sceneID="51f-Vj-0tx">
+            <objects>
+                <viewController id="Nxc-9L-veq" customClass="OBQRCodeScannerViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="X4L-j7-QdL"/>
+                        <viewControllerLayoutGuide type="bottom" id="kN3-lZ-NbD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wRB-IN-s1d">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJM-NQ-wY0">
+                                <rect key="frame" x="16" y="562" width="343" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="zaq-Bb-pXh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kN3-lZ-NbD" firstAttribute="top" secondItem="WJM-NQ-wY0" secondAttribute="bottom" constant="20" id="2E7-8e-l41"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WJM-NQ-wY0" secondAttribute="trailing" id="fus-jS-RK7"/>
+                            <constraint firstItem="WJM-NQ-wY0" firstAttribute="leading" secondItem="wRB-IN-s1d" secondAttribute="leadingMargin" id="kz4-u3-h4l"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Сканер QR кода" id="T4z-pU-4kh">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="jtg-Mw-qnJ" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
+                            <connections>
+                                <action selector="goBack:" destination="Nxc-9L-veq" id="cLo-hI-mLd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="QRCodeLabel" destination="WJM-NQ-wY0" id="I8J-eH-fQz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JZB-Aj-qKN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1193" y="-313"/>
         </scene>
         <!--Платежи и переводы-->
         <scene sceneID="TRL-cK-unQ">
@@ -70,24 +134,82 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Платежи и переводы" id="EAb-bB-24O">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="4BO-va-Xtb" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
+                        <barButtonItem key="leftBarButtonItem" id="4BO-va-Xtb" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
                             <connections>
                                 <action selector="goBack:" destination="CnV-GC-eNx" id="UdL-Ol-stH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="backButton" destination="4BO-va-Xtb" id="l7f-Hg-AvV"/>
                         <outlet property="navigationItem" destination="EAb-bB-24O" id="Deu-cw-flU"/>
                         <outlet property="tableView" destination="gGS-W7-Oen" id="Vuo-he-36l"/>
                         <segue destination="gjT-o0-bdy" kind="show" identifier="toCardPicker" id="U2W-Rj-845"/>
+                        <segue destination="GqU-CQ-VcX" kind="show" identifier="toCreateQR" id="Xe9-Xm-UgS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vjq-38-Fd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2150" y="-1164"/>
         </scene>
-        <!--Card Picker View Controller-->
+        <!--Сгенерированный QR код-->
+        <scene sceneID="Ogh-2j-Yor">
+            <objects>
+                <viewController id="GqU-CQ-VcX" customClass="OBCreateQRViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9ZI-zj-80q"/>
+                        <viewControllerLayoutGuide type="bottom" id="MOW-7n-kui"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8kb-UI-j7n">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nyh-kF-Qpt">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="375" id="OaC-uj-pzZ"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xBV-Oy-TZZ">
+                                <rect key="frame" x="16" y="513" width="343" height="70"/>
+                                <color key="backgroundColor" red="0.0" green="0.73725490196078436" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="viX-yK-xcD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <state key="normal" title="Отправить">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nyh-kF-Qpt" firstAttribute="leading" secondItem="8kb-UI-j7n" secondAttribute="leading" id="GiE-kw-CSF"/>
+                            <constraint firstItem="xBV-Oy-TZZ" firstAttribute="trailing" secondItem="8kb-UI-j7n" secondAttribute="trailingMargin" id="WFx-5b-JKh"/>
+                            <constraint firstItem="nyh-kF-Qpt" firstAttribute="top" secondItem="8kb-UI-j7n" secondAttribute="top" id="YOf-hZ-LwJ"/>
+                            <constraint firstAttribute="trailing" secondItem="nyh-kF-Qpt" secondAttribute="trailing" id="ZZ0-t4-3UB"/>
+                            <constraint firstItem="xBV-Oy-TZZ" firstAttribute="leading" secondItem="8kb-UI-j7n" secondAttribute="leadingMargin" id="nat-Rw-axG"/>
+                            <constraint firstItem="MOW-7n-kui" firstAttribute="top" secondItem="xBV-Oy-TZZ" secondAttribute="bottom" constant="20" id="s8b-q1-dKB"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Сгенерированный QR код" id="Qgv-rz-UED">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="THn-2N-3tw" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
+                            <connections>
+                                <action selector="goBack:" destination="GqU-CQ-VcX" id="iks-gY-j6k"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="QRImage" destination="nyh-kF-Qpt" id="CVW-hE-Ehh"/>
+                        <outlet property="pushButton" destination="xBV-Oy-TZZ" id="coh-RL-ge0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ba9-rf-Mhg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3017" y="-1934"/>
+        </scene>
+        <!--Выбор карты-->
         <scene sceneID="hJ8-K0-ScL">
             <objects>
                 <viewController id="gjT-o0-bdy" customClass="OBCardPickerViewController" customModule="Codility" customModuleProvider="target" sceneMemberID="viewController">
@@ -99,14 +221,26 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2IN-j6-qXS">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2IN-j6-qXS">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2IN-j6-qXS" firstAttribute="leading" secondItem="SoT-4c-g55" secondAttribute="leading" id="5XW-bN-2uH"/>
+                            <constraint firstItem="vv7-em-Noz" firstAttribute="top" secondItem="2IN-j6-qXS" secondAttribute="bottom" id="Jaq-98-wO8"/>
+                            <constraint firstItem="2IN-j6-qXS" firstAttribute="top" secondItem="ddM-iT-h83" secondAttribute="bottom" id="Tzd-p1-dPA"/>
+                            <constraint firstAttribute="trailing" secondItem="2IN-j6-qXS" secondAttribute="trailing" id="gzR-PM-SdP"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Выбор карты" id="HG5-rX-wYe">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="SYE-f6-oA8" customClass="OBBackBarButtonItem" customModule="Codility" customModuleProvider="target">
+                            <connections>
+                                <action selector="goBack:" destination="gjT-o0-bdy" id="wAX-vm-rie"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="2IN-j6-qXS" id="coG-de-lI2"/>
                     </connections>
